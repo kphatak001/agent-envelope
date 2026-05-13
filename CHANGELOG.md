@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.3.0 (2026-05-13)
+
+### mcpfw Bidirectional Integration
+
+**New features:**
+- **Ingest mcpfw audit logs** — Feed mcpfw's JSONL audit output into an envelope session for session-level behavioral analysis on top of per-call policy.
+- **Export envelope as mcpfw policy** — Generate mcpfw-compatible YAML (budgets, rate limits, approval gates) from envelope definitions.
+- **Kill signal propagation** — When envelope issues KILL, writes a deny-all policy that mcpfw hot-reloads, blocking all subsequent calls instantly.
+- **McpfwEnvelopeSession** — Combined session class that auto-propagates kills to mcpfw policy file.
+
+**New module:**
+- `agent_envelope.mcpfw` — All integration functions in one place.
+
+**Tests:** 34 total (7 new), all passing.
+
 ## 0.2.0 (2026-05-13)
 
 ### Phase 2: Workflow Matching + Session Data Flow
