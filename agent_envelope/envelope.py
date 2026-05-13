@@ -31,6 +31,8 @@ class Envelope:
     forbidden_flows: list[ForbiddenFlow] = field(default_factory=list)
     requires_human_approval: list[str] = field(default_factory=list)
     max_chain_depth: int = 5
+    workflows: list[dict] = field(default_factory=list)  # [{name, steps, max_steps}]
+    unknown_workflow_threshold: int = 3
     responses: dict[str, float] = field(default_factory=lambda: {
         "warn": 0.3, "pause": 0.6, "kill": 0.8
     })
@@ -91,5 +93,7 @@ def load_envelope(path: str | Path) -> Envelope:
         forbidden_flows=forbidden_flows,
         requires_human_approval=autonomy.get("requires_human_approval", []),
         max_chain_depth=autonomy.get("max_chain_depth", 5),
+        workflows=raw.get("workflows", []),
+        unknown_workflow_threshold=raw.get("drift", {}).get("unknown_workflow_threshold", 3),
         responses=thresholds,
     )

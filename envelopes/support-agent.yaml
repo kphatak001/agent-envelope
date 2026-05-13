@@ -1,6 +1,14 @@
 name: support-agent
 purpose: "Answer customer questions using knowledge base and account data"
 
+workflows:
+  - name: answer_question
+    steps: ["search_kb", "read_*", "format_*", "send_reply"]
+    max_steps: 10
+  - name: escalate
+    steps: ["search_kb", "classify_*", "create_ticket"]
+    max_steps: 5
+
 bounds:
   max_actions_per_session: 50
   max_tokens_consumed: 100000
@@ -23,6 +31,7 @@ bounds:
       - "external_communication"
 
 drift:
+  unknown_workflow_threshold: 3
   velocity:
     max_actions_per_minute: 20
   repetition:
