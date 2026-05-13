@@ -1,0 +1,38 @@
+name: support-agent
+purpose: "Answer customer questions using knowledge base and account data"
+
+bounds:
+  max_actions_per_session: 50
+  max_tokens_consumed: 100000
+  max_duration_seconds: 300
+  max_cost_usd: 1.00
+  max_actions_per_minute: 20
+
+  data_flow:
+    forbidden_flows:
+      - from: "customer_account"
+        to: ["email_external", "file_export", "api_external"]
+      - from: "internal_docs"
+        to: ["email_external", "api_external"]
+
+  autonomy:
+    max_chain_depth: 3
+    requires_human_approval:
+      - "refund > 100"
+      - "account_modification"
+      - "external_communication"
+
+drift:
+  velocity:
+    max_actions_per_minute: 20
+  repetition:
+    max_identical_calls: 3
+    max_similar_calls: 10
+
+responses:
+  warn:
+    threshold: 0.3
+  pause:
+    threshold: 0.6
+  kill:
+    threshold: 0.8

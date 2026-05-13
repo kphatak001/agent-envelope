@@ -1,0 +1,39 @@
+name: coding-agent-locked
+purpose: "Generate and modify code within project directory only"
+
+bounds:
+  max_actions_per_session: 200
+  max_tokens_consumed: 500000
+  max_duration_seconds: 1800
+  max_cost_usd: 5.00
+  max_actions_per_minute: 40
+
+  data_flow:
+    forbidden_flows:
+      - from: "secrets"
+        to: ["api_external", "file_export", "stdout"]
+      - from: ".env"
+        to: ["api_external", "git_commit"]
+
+  autonomy:
+    max_chain_depth: 2
+    requires_human_approval:
+      - "git_push"
+      - "deploy"
+      - "delete_file"
+      - "install_package"
+
+drift:
+  velocity:
+    max_actions_per_minute: 40
+  repetition:
+    max_identical_calls: 5
+    max_similar_calls: 20
+
+responses:
+  warn:
+    threshold: 0.4
+  pause:
+    threshold: 0.7
+  kill:
+    threshold: 0.9
