@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.1 (2026-05-14)
+
+### mcpfw HTTP Proxy Integration (Network-Enforced)
+
+- agent-envelope now runs inside mcpfw's HTTP proxy as the session-level enforcement engine
+- Cross-action data flow detection works at the network layer (agent can't bypass)
+- Demo at `mcpfw/demo/run_demo.sh` shows envelope catching exfiltration that per-call policy misses
+- This is the architecture the greenfield product would use: network-enforced, not in-process
+
 ## 0.3.0 (2026-05-13)
 
 ### mcpfw Bidirectional Integration
